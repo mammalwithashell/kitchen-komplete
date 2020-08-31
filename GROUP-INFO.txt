@@ -1,3 +1,6 @@
 Group Name: AIJNW
-Group Members: Brian Little
+Group Members: Brian Little, James Peters
 Repository Creator: Brian Little
+
+Group Emails:
+James Peters | james.peters97@outlook.com
