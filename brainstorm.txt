@@ -1,4 +1,3 @@
-Dating App
-Group Scheduling App
-Nutrition and Exercise calculator
-Voice to text scheduling/productivity
+* Scheduling/productivity
+* Google maps with history tie in
+* Recipe Application to cook with ingredients
