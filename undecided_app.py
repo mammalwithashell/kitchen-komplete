@@ -1,1 +1,1 @@
-from undecided_app import app
+from app import app
