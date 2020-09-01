@@ -1,4 +1,5 @@
 # Files to ignore in your project path - James
+.vscode/*
 Project1.code-workspace
 .vscode/launch.json
 undecided_app/__pycache__/app.cpython-38.pyc
