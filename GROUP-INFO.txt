@@ -1,7 +1,8 @@
 Group Name: AIJNW
-Group Members: Brian Little, James Peters
+Group Members: Brian Little, James Peters, Nikki Meyer
 Repository Creator: Brian Little
 
 Group Emails:
 James Peters | james.peters97@outlook.com
 Brian Little | BrianLittle@my.unt.edu / bwlittle10@gmail.com
+Nikki Meyer  | marymeyer@my.unt.edu
