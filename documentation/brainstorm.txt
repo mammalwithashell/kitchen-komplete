@@ -1,3 +1,15 @@
 * Scheduling/productivity
+    * Sorting & Scheduling Algorithm
+    * User database
 * Google maps with history tie in
+    * Map display
+    * History fact Database
+        * Separate facts by region
 * Recipe Application to cook with ingredients
+    * Database to work with the backend
+    * User Login
+        * Security
+        * Authentication
+        * Authorization
+        * Usage & Stat dashboard (Numpy/SciPi)
+    

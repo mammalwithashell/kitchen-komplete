@@ -1,0 +1,1 @@
+start the project with flask run
