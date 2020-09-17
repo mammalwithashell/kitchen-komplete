@@ -6,7 +6,14 @@
 
     Next import the pages of the web app stored in routes
     """
-from app import routes
 from flask import Flask
+from flask_sslify import SSLify
+import flask_sqlalchemy
 
-app = Flask(__name__)
+flask_app = Flask(__name__)
+flask_app.debug = True
+sslify = SSLify(flask_app)
+
+from recipe_app import routes
+
+# Import routes into the package
