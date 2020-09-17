@@ -9,11 +9,13 @@
 from flask import Flask
 from flask_sslify import SSLify
 import flask_sqlalchemy
+from config import Config # import config.py
+
+
 
 flask_app = Flask(__name__)
 flask_app.debug = True
 sslify = SSLify(flask_app)
+flask_app.config.from_object(Config)
 
-from recipe_app import routes
-
-# Import routes into the package
+from recipe_app import routes # Import routes into the package

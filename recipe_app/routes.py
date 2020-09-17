@@ -7,7 +7,7 @@ from flask import render_template
 @flask_app.route("/")
 @flask_app.route("/index", methods=["GET", "POST"])
 def index():
-    return "Hello, World!"
+    return render_template("index.html")
 
 
 # Route to example page
