@@ -1,5 +1,4 @@
 Flask
-SSLify
 flask_sqlalchemy
-FlaskForm
+flask_wtf
 wtforms

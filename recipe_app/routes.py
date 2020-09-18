@@ -5,7 +5,7 @@ from flask import render_template
 
 # Route to home webpage
 @flask_app.route("/")
-@flask_app.route("/index", methods=["GET", "POST"])
+@flask_app.route("/index")
 def index():
     return render_template("index.html")
 
