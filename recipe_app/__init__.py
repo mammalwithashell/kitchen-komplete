@@ -9,13 +9,12 @@
 from flask import Flask
 import flask_sqlalchemy
 from config import Config # import config.py
-from flask_talisman import Taslisman
+# from flask_talisman import Talisman
 
 
 flask_app = Flask(__name__)
 flask_app.debug = True
 flask_app.config.from_object(Config)
 
-talisman = Taslisman(flask_app)
-
+# talisman = Talisman(flask_app)
 from recipe_app import routes # Import routes into the package
