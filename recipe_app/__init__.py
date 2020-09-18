@@ -9,7 +9,7 @@
 from flask import Flask
 import flask_sqlalchemy
 from config import Config # import config.py
-from flask_taslisman import Taslisman
+from flask_talisman import Taslisman
 
 
 flask_app = Flask(__name__)
