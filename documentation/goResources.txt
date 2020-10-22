@@ -15,3 +15,5 @@ https://youtu.be/DPFJePP8cEc
 Database
 //Go rest api with mongodb https://youtu.be/oW7PMHEYiSk
 https://github.com/mongodb/mongo-go-driver
+https://godoc.org/go.mongodb.org/mongo-driver/mongo
+https://youtu.be/WEYtAKYbB6k
