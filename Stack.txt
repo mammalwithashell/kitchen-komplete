@@ -1,0 +1,7 @@
+Go backend
+*http listenAndServe html
+*Cookies
+
+MongoDB database
+Host on heroku/googleAppEngine
+Bootstrap html frontend
