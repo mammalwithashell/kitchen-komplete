@@ -5,3 +5,4 @@ env/*
 .idea/*
 AIJNW.code-workspace
 __pycache__/*
+documentation/use_case.drawio
