@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // Function to adapt file path for templates
@@ -25,15 +25,24 @@ func pantryPage(res http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(res, "Pantry Page")
 }
 
+// Recipe struct for mongodb
+type Recipe struct {
+	ID    primitive.ObjectID `bson:"_id"`
+	Name  string             `bson:"name"`
+	Class string             `bson:"class"`
+}
+
 // Recipe page handler
 func recipePage(res http.ResponseWriter, req *http.Request) {
 	collection := client.Database("testdb").Collection("recipes")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	result, _ := collection.InsertOne(ctx, bson.D{
-		{Key: "dishName", Value: "Lemon Pepper Wings"},
-		{Key: "class", Value: "Entree"},
-	})
+	r := Recipe{
+		ID:    primitive.NewObjectID(),
+		Name:  "Fish",
+		Class: "Entree",
+	}
+	result, _ := collection.InsertOne(ctx, r)
 	fmt.Fprint(res, result.InsertedID)
 }
 

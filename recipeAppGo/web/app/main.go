@@ -19,7 +19,6 @@ var client *mongo.Client
 func main() {
 	port := ":8080"
 	fmt.Println("Starting Kitchen Komplete application...")
-	fmt.Println("Local Server running on port" + port)
 
 	// Connect to mongodb client
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -40,6 +39,8 @@ func main() {
 	router.HandleFunc("/myrecipes", recipePage)
 	router.HandleFunc("/support", supportPage)
 
+	fmt.Println("Local Server running on port " + port)
+	fmt.Println("http://localhost:8080")
 	if err := http.ListenAndServe(port, router); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
