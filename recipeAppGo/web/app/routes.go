@@ -15,11 +15,6 @@ func templatePath(s string) string {
 	return "C:\\Users\\james\\OneDrive\\School\\Fall 2020\\CSCE 3444 Software Engineering\\Project1\\CSCE-3444-Team-AIJNW\\recipeAppGo\\web\\template\\" + s
 }
 
-// Home page handler
-func homePage(res http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(res, "Hello")
-}
-
 // Pantry page handler
 func pantryPage(res http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(res, "Pantry Page")

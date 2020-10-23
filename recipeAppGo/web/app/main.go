@@ -32,12 +32,19 @@ func main() {
 	}
 	defer client.Disconnect(ctx)
 
+	/*//Prep flags to serve static pages
+	var dir string
+	flag.StringVar(&dir, "dir", ".", "the directory to serve files from. Defaults to the current dir")
+	flag.Parse()*/
+
 	// Create multiplexer and handle routes
 	router := mux.NewRouter()
-	router.HandleFunc("/", homePage)
 	router.HandleFunc("/mypantry", pantryPage)
 	router.HandleFunc("/myrecipes", recipePage)
 	router.HandleFunc("/support", supportPage)
+
+	// Serve static pages
+	router.PathPrefix("/").Handler(http.FileServer(http.Dir("../static")))
 
 	fmt.Println("Local Server running on port " + port)
 	fmt.Println("http://localhost:8080")
