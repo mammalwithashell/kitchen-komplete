@@ -25,13 +25,6 @@ func pantryPage(res http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(res, "Pantry Page")
 }
 
-// Recipe struct for mongodb
-type Recipe struct {
-	ID    primitive.ObjectID `bson:"_id"`
-	Name  string             `bson:"name"`
-	Class string             `bson:"class"`
-}
-
 // Recipe page handler
 func recipePage(res http.ResponseWriter, req *http.Request) {
 	collection := client.Database("testdb").Collection("recipes")
