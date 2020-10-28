@@ -5,3 +5,4 @@ Define datamodel
 use https (secure) on server
 cookies
 sessions
+user login w/ database

@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"mammal.shell/kitchenKomplete/models"
 )
 
 // Pantry page handler
@@ -22,7 +23,7 @@ func createRecipePage(res http.ResponseWriter, req *http.Request) {
 	collection := client.Database("testdb").Collection("recipes")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	r := Recipe{
+	r := models.Recipe{
 		ID:    primitive.NewObjectID(),
 		Name:  "Fish",
 		Class: "Entree",

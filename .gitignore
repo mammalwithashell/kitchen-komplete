@@ -1,8 +1,6 @@
 # Files to ignore in your project path - James
 .vscode/*
-recipe_app/__pycache__/*
-env/*
 .idea/*
-AIJNW.code-workspace
 __pycache__/*
 documentation/use_case.drawio
+CSCE-3444.code-workspace

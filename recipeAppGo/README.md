@@ -1,1 +1,0 @@
-Root folder of the go web app module
