@@ -8,12 +8,16 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	//"github.com/gorilla/sessions"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // Declare mongo client globally
 var client *mongo.Client
+
+// Cookies/Session
+// SSl
 
 // Main function for serving http pages
 func main() {
@@ -32,22 +36,19 @@ func main() {
 	}
 	defer client.Disconnect(ctx)
 
-	/*//Prep flags to serve static pages
-	var dir string
-	flag.StringVar(&dir, "dir", ".", "the directory to serve files from. Defaults to the current dir")
-	flag.Parse()*/
-
 	// Create multiplexer and handle routes
 	router := mux.NewRouter()
-	router.HandleFunc("/mypantry", pantryPage)
-	router.HandleFunc("/myrecipes", recipePage)
+	router.HandleFunc("/add_recipe", createRecipePage)
+	router.HandleFunc("/mypantry", readRecipePage)
+	router.HandleFunc("/update-recipe{number}/", updateRecipePage)
 	router.HandleFunc("/support", supportPage)
 
 	// Serve static pages
-	router.PathPrefix("/").Handler(http.FileServer(http.Dir("../static")))
+	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./ui/static")))
 
+	// Start server for debug
 	fmt.Println("Local Server running on port " + port)
-	fmt.Println("http://localhost:8080")
+	fmt.Println("http://localhost" + port)
 	if err := http.ListenAndServe(port, router); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
