@@ -1,10 +1,14 @@
-Go Http server
+//Go Http server
 sentdex go tutorial
 https://www.youtube.com/playlist?list=PLQVvvaa0QuDeF3hP0wQoSxpkqgRcgxMqX
 https://www.gorillatoolkit.org/
 https://astaxie.gitbooks.io/build-web-application-with-golang/content/en/03.4.html
 https://golang.org/doc/articles/wiki/
 https://echo.labstack.com/
+
+// gorillatoolkit sessions
+https://curtisvermeeren.github.io/2018/05/13/Golang-Gorilla-Sessions.html
+
 
 https
 https://medium.com/rungo/secure-https-servers-in-go-a783008b36da

@@ -1,3 +1,0 @@
-Run the flask_env file to start the debug server
-For Windows and Powershell use .ps1
-For Linux and bash use .sh

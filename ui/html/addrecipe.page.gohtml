@@ -1,0 +1,15 @@
+{{if .Success}}
+    <h1>Add your recipe here</h1>
+    <p>Food goes here<p>
+{{else}}
+    <h1>Add Recipe</h1>
+    <form method="POST">
+        <label>Title:</label><br />
+        <input type="text" name="title"><br />
+        <label>Class:</label><br />
+        <input type="text" name="class"><br />
+        <label>Ingredients:</label><br />
+        <textarea name="ingredients"></textarea><br />
+        <input type="submit">
+    </form>
+{{end}}

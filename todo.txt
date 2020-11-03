@@ -1,8 +1,9 @@
-Makefile
 * MongoDB database
-Docker file
-Define datamodel
+~ Docker file
+* Define datamodel
 use https (secure) on server
 cookies
 sessions
 user login w/ database
+display recipes on homepage
+have a html page for pantry
