@@ -35,6 +35,7 @@ func init() {
 		HttpOnly: true,
 	}
 
+	app.Routes()
 	// Register the user type with gob/encoding so it can be written as a session value
 	gob.Register(models.User{})
 }
@@ -43,7 +44,6 @@ func main() {
 	port := ":8080"
 	fmt.Println("Starting Kitchen Komplete application...")
 	var app application
-
 	// Connect to mongodb client
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -60,15 +60,6 @@ func main() {
 	app.router = mux.NewRouter()
 	app.templates = template.Must(template.ParseGlob("./ui/html/*.gohtml"))
 
-	app.router.HandleFunc("/all_recipes", app.allRecipePage)
-	app.router.HandleFunc("/add_recipe", app.createRecipePage)
-	app.router.HandleFunc("/myrecipes", app.readRecipePage)
-	app.router.HandleFunc("/update-recipe{number}/", app.updateRecipePage)
-	app.router.HandleFunc("/remove-recipe{_id}", app.deleteRecipeHandlerFunc)
-	app.router.HandleFunc("/support", app.supportPage)
-	app.router.HandleFunc("/mypantry", app.pantryHandler)
-	app.router.HandleFunc("/login", app.loginHandler)
-	app.router.HandleFunc("/register", app.registerHandler)
 	// serve static pages
 	app.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./ui/static")))
 
@@ -83,15 +74,15 @@ func main() {
 
 // A struct to represent key things in the application
 type application struct {
-	router    *mux.Router
+	router    *mux.Router           // Router
 	client    *mongo.Client         // Declare mongo client globally
 	store     *sessions.CookieStore // Cookies/Session
-	templates *template.Template
+	templates *template.Template    // Parsed templates
 	// SSl
 
 }
 
-// Function to get user cookie.
+// Function to get userID from session cookie.
 func getUser(s *sessions.Session) models.User {
 	val := s.Values["user"]
 	var user = models.User{}

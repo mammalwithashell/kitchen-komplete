@@ -1,5 +1,8 @@
 package main
 
+/*
+Logic for the handler functions
+*/
 import (
 	"context"
 	"fmt"
@@ -178,6 +181,7 @@ func (app application) loginHandler(res http.ResponseWriter, req *http.Request) 
 	var temp1 models.User
 	err = collection.FindOne(ctx, bson.M{"user_id": usr.UserID}).Decode(&temp1)
 	if err != nil {
+		// Handle error if user_id is not in database
 		res.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprintln(res, "Username or Password aren't correct, please try again.")
 		return
@@ -185,6 +189,7 @@ func (app application) loginHandler(res http.ResponseWriter, req *http.Request) 
 	userPass := []byte(req.FormValue("passwd"))
 	dbPass := []byte(temp1.HashedPassword)
 	if passErr := bcrypt.CompareHashAndPassword(dbPass, userPass); passErr != nil {
+		// If not the right password
 		fmt.Fprintln(res, "Wrong Password")
 		fmt.Fprintln(res, "DbPass: ", dbPass)
 		fmt.Fprintln(res, "userPass: ", userPass)
@@ -196,10 +201,11 @@ func (app application) loginHandler(res http.ResponseWriter, req *http.Request) 
 	session.Values["user"] = temp1
 	err = session.Save(req, res)
 	if err != nil {
+		// Handle session save error
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	http.Redirect(res, req, "/profile.html", http.StatusFound)
+	http.Redirect(res, req, "/profile{}.html", http.StatusFound)
 }
 
 // Password function that ensures rigorous passwords

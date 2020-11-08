@@ -7,3 +7,5 @@ sessions
 user login w/ database
 display recipes on homepage
 have a html page for pantry
+Middleware
+Tests
