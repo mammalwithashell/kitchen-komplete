@@ -90,11 +90,11 @@ html, body {
 
 div.ex1 {
   background-color: #9BC6FF;
-  padding: 15px;
+  text-padding: 15px;
   position: responsive;
   border: 2px solid black;
   margin-left: 15%;
-  align: center;
+  text-align: left;
   width: 70%;
   height: 400px;
   overflow: auto;
