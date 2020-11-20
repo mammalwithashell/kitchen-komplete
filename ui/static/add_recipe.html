@@ -8,16 +8,16 @@
 
 <ul>
   <form method= "get" action="user_home.html">
-	<button class="button buttonhome">Home</button>
+	  <button class="button buttonhome">Home</button>
   </form>
   <form method= "get" action="index.html">
-	<button class="button button1">Logout</button>
+	  <button class="button button1">Logout</button>
   </form>
   <form method= "get" action="about.html">
-	<button class="button button1">About</button>
+	  <button class="button button1">About</button>
   </form>
   <form method= "get" action="profile.html">
-	<button class="button button1">Profile</button>
+	  <button class="button button1">Profile</button>
   </form>
 </ul>
 
@@ -25,36 +25,28 @@
 
 		
 <div class="content">
-    <div class="content-inside">
-		<!-- <h1> "This is the user add recipes page (add_recipe.html)"</h1> -->
-		<h1>Add Recipes</h1>
- <div class="row">
-  <div class="column_small" style="background-color:#aaa;">
-    <img src="favicon.jpg" width="60%" height="50%">
-	<br></br>
-	<form method= "get" action="add_recipe.html">
-	<button class="button button_submit">Submit Recipe</button>
-		</form>
+  <div class="content-inside">
+    <!-- <h1> "This is the user add recipes page (add_recipe.html)"</h1> -->
+    <h1>Add Recipes</h1>
+    <div class="row">
+      <div class="column_small" style="background-color:#aaa;">
+        <img src="favicon.jpg" width="60%" height="50%"><br></br>
+        <form method= "Post" action="/create-recipe">
+          <label for="recipe content">Category:</label>
+          <input type=text name="name"><br></br>
+          <label for="recipe content">Ingredients:</label>
+          <input type=text name="class"><br></br>
+          <label for="recipe content">Instructions:</label>
+          <input type=text name="ingredients"><br></br>
+          <button class="button button_submit">Submit Recipe</button>
+        </form>
         <form method= "get" action="profile.html" style="position: center">
             <button class="button button_submit">Cancel</button>
         </form>
-	    </div>
-    </div>
-    <div class="column_wide">
-        <div class="ex1" style="height: 100%" style="width: 100%">
-            <label for="recipe content">Category:</label>
-            <textarea id="w3review" name="w3review" rows="2" cols="65">
-            </textarea><br></br>
-            <label for="recipe content">Ingredients:</label>
-            <textarea id="w3review" name="w3review" rows="10" cols="65">
-            </textarea><br></br>
-            <label for="recipe content">Instructions:</label>
-            <textarea id="w3review" name="w3review" rows="150" cols="65">
-            </textarea>
-        </div>
-    </div>
+      </div>
     </div>
   </div>
+</div>
 
 <!-- main section ends here -->
 <footer class="footer"><p>Kitchen Komplete © 2020</p></footer>

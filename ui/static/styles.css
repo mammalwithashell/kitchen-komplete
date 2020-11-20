@@ -1,4 +1,7 @@
 /* comment*/
+.error{
+  color: red;
+}
 
 ul {
   list-style-type: none;

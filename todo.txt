@@ -9,3 +9,10 @@ display recipes on homepage
 have a html page for pantry
 Middleware
 Tests
+
+next weak:
+1. recipes information:
+    I.      Estimated Cooking time
+    II.     Preparation
+    III.    tools? maybe if its' not complicated
+2. CSS spacing and layout

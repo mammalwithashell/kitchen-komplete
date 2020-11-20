@@ -25,10 +25,15 @@
 		<!-- <h1>This is the login form page (login.html)</h1><br></br> -->
 			<h1>User Login</h1>
 			<form method= "POST" action="/login">
-				<label for="fname">Username</label>
-				<input type="text" id="fname" name="username"><br><br>
-				<label for="lname">Password</label>
-				<input type="text" id="lname" name="passwd"><br><br>
+				<div>
+					<label for="fname">Username</label>
+					<input type="text" id="fname" name="username"><br><br>
+					<label for="lname">Password</label>
+					<input type="password" id="lname" name="passwd"><br><br>
+					{{ with .Errors.Login }}
+					<p class="error">{{ . }}</p>
+					{{ end }}
+                </div>
 				<input type="submit">
 			</form>
 		</div>

@@ -1,12 +1,72 @@
-<h1>User Registration</h1>
-<form method= "POST">
-    <label>Name</label><br />
-    <input type="text" name="name"><br/>
-    <label>Username</label><br />
-    <input type="text" name="username"><br/>
-    <label>Email</label><br />
-    <input type="text" name="email"><br/>
-    <label>Password</label><br />
-    <input type="text" name="passwd"><br/>
-    <input type="submit">
-</form>
+ <!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="styles.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<ul>
+  <form method= "get" action="index.html">
+	<button class="button buttonhome">Home</button>
+  </form>
+  <form method= "get" action="about.html">
+	<button class="button button1">About</button>
+  </form>
+  <form method= "get" action="index.html">
+	<button class="button button1">Browse Recipes</button>
+  </form>
+</ul>
+
+<!-- main section starts here -->
+<div class="content">
+    <div class="center">
+		<div class="center">
+		<!-- <h1>This is the register form page (/register)</h1><br></br> -->
+			<h1>User Registration</h1>
+			<form method= "POST" action="/register">
+                <div>
+                    <label for="fname">Name</label>
+				    <input type="text" id="fname" name="name">
+					{{ with .Errors.Name }}
+					<p class="error">{{ . }}</p>
+					{{ end }}<br><br>
+                </div>
+				
+				<div>
+                    <label for="lname">Username</label>
+				    <input type="text" id="lname" name="username">
+					{{ with .Errors.User }}
+					<p class="error">{{ . }}</p>
+					{{ end }}<br><br>
+                </div>
+				
+				<div>
+					<label for="fname">Email</label>
+					<input type="text" id="fname" name="email">
+					{{ with .Errors.Email }}
+					<p class="error">{{ . }}</p>
+					{{ end }}<br><br>
+				</div>
+				
+				<div>
+					<label for="lname">Password</label>
+					<input type="password" id="lname" name="passwd"><br><br>
+					
+					<label for="lname">Confirm Password</label>
+					<input type="password" id="lname" name="cfm_passwd">
+					{{ with .Errors.Password }}
+					<p class="error">{{ . }}</p>
+					{{ end }}<br><br>
+				</div>
+				
+				
+				<input type="submit"><br><br>
+			</form>
+		</div>
+    </div>
+</div>
+<!-- main section ends here -->
+<footer class="footer"><p>Kitchen Komplete © 2020</p></footer>
+</body>
+</html>

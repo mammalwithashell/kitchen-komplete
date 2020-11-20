@@ -6,16 +6,15 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"text/template"
 	"time"
 
+	"github.com/gobuffalo/packr"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
-	"mammal.shell/kitchenKomplete/models"
-
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"mammal.shell/kitchenKomplete/models"
 )
 
 // Main function for serving http pages
@@ -41,7 +40,7 @@ func init() {
 
 func main() {
 
-	port := ":8080"
+	port := ":8082"
 	fmt.Println("Starting Kitchen Komplete application...")
 
 	// Connect to mongodb client
@@ -58,11 +57,13 @@ func main() {
 
 	// Create multiplexer and handle routes
 	app.router = mux.NewRouter()
-	app.templates = template.Must(template.ParseGlob("./ui/html/*.gohtml"))
+	//app.templates = packr.NewBox("./ui/templates")
+	//app.static = packr.NewBox("./ui/static")
+	//app.templates = template.Must(template.ParseGlob("./ui/html/*.gohtml"))
 	app.Routes()
 
 	// serve static pages
-	app.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./ui/static")))
+	app.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./ui/static/")))
 
 	// Start server for debug
 	fmt.Println("Local Server running on port " + port)
@@ -78,7 +79,8 @@ type application struct {
 	router    *mux.Router           // Router
 	client    *mongo.Client         // Declare mongo client globally
 	store     *sessions.CookieStore // Cookies/Session
-	templates *template.Template    // Parsed templates
+	templates packr.Box             // templates
+	static    packr.Box
 	// SSl
 
 }
