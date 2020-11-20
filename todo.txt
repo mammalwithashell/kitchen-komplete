@@ -16,3 +16,4 @@ next weak:
     II.     Preparation
     III.    tools? maybe if its' not complicated
 2. CSS spacing and layout
+3. signout button very *** important ***
