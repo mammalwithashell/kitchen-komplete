@@ -35,15 +35,15 @@ func init() {
 		HttpOnly: true,
 	}
 
-	app.Routes()
 	// Register the user type with gob/encoding so it can be written as a session value
 	gob.Register(models.User{})
 }
 
 func main() {
+
 	port := ":8080"
 	fmt.Println("Starting Kitchen Komplete application...")
-	var app application
+
 	// Connect to mongodb client
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -59,6 +59,7 @@ func main() {
 	// Create multiplexer and handle routes
 	app.router = mux.NewRouter()
 	app.templates = template.Must(template.ParseGlob("./ui/html/*.gohtml"))
+	app.Routes()
 
 	// serve static pages
 	app.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./ui/static")))
