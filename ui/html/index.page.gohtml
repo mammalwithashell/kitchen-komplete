@@ -1,28 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<link rel="stylesheet" href="styles.css">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-
-<ul>
-  <form method= "get" action="/">
-	<button class="button buttonhome">Home</button>
-  </form>
-  <form method= "get" action="/login">
-	<button class="button button1">Login</button>
-  </form>
-  <form method= "get" action="/register">
-	<button class="button button1">Register</button>
-  </form>
-  <form method= "get" action="about.html">
-	<button class="button button1">About</button>
-  </form>
-  <form method= "get" action="/">
-	<button class="button button1">Browse Recipes</button>
-  </form>
-</ul>
+{{ template "header.layout.gohtml" .}}
 
 <!-- main section starts here -->
 
@@ -33,7 +9,19 @@
 
       <div class="ex1">
         {{range .Rec}}
-          {{.Name}} {{.Class}} {{.Ingredients}}<br></br>
+          {{.Name}}<br></br> 
+          {{.Category}}<br></br>
+          <ul>
+          {{range .Ingredients}}
+            <li>{{.}}</li>
+          {{end}}
+          </ul>
+          {{.PrepTime}}<br></br> 
+          <ul>
+          {{range .Instructions}}
+            <li>{{.}}</li>
+          {{end}}
+          </ul>        
         {{end}}
       </div>
     </div>

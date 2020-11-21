@@ -15,4 +15,6 @@ func (a application) Routes() {
 	app.router.HandleFunc("/login", app.loginHandler)
 	app.router.HandleFunc("/register", app.registerHandler)
 	app.router.HandleFunc("/", app.showHandler)
+	app.router.HandleFunc("/profile", app.profileHandler)
+	app.router.HandleFunc("/logout", app.logoutHandler)
 }

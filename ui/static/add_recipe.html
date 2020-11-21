@@ -32,13 +32,16 @@
       <div class="column_small" style="background-color:#aaa;">
         <img src="favicon.jpg" width="60%" height="50%"><br></br>
         <form method= "Post" action="/create-recipe">
-          <label for="recipe content">Category:</label>
-          <input type=text name="name"><br></br>
-          <label for="recipe content">Ingredients:</label>
-          <input type=text name="class"><br></br>
-          <label for="recipe content">Instructions:</label>
-          <input type=text name="ingredients"><br></br>
-          <button class="button button_submit">Submit Recipe</button>
+          <label>Title:</label><br/>
+          <input type="text" name="title"><br/>
+          <label>Category:</label><br/>
+          <input type="text" name="category"><br/>
+          <label>Ingredients:</label><br />
+          <textarea name="ingredients"></textarea><br/>
+          <label>Preparation time:</label><br/>
+          <input type="text" name="preptime"><br/>
+          <label>Instructions:</label><br />
+          <textarea name="instructions"></textarea><br/>
         </form>
         <form method= "get" action="profile.html" style="position: center">
             <button class="button button_submit">Cancel</button>

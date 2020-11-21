@@ -9,6 +9,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -72,10 +73,12 @@ func (app application) createRecipePage(res http.ResponseWriter, req *http.Reque
 	defer cancel()
 
 	r := models.Recipe{
-		ID:          primitive.NewObjectID(),
-		Name:        req.FormValue("title"),
-		Class:       req.FormValue("class"),
-		Ingredients: strings.Split(req.FormValue("ingredients"), ","),
+		ID:           primitive.NewObjectID(),
+		Name:         req.FormValue("title"),
+		Category:     req.FormValue("category"),
+		Ingredients:  strings.Split(req.FormValue("ingredients"), ","),
+		PrepTime:     req.FormValue("preptime"),
+		Instructions: strings.Split(req.FormValue("instructions"), ","),
 	}
 	collection.InsertOne(ctx, r)
 	http.Redirect(res, req, "/add_recipe.html", http.StatusFound)
@@ -195,17 +198,24 @@ func (app application) loginHandler(res http.ResponseWriter, req *http.Request) 
 	}
 
 	// Should be authenticated at this point on
-	temp1.Authenticated = true
-	session.Values["user"] = temp1
+	// temp1.Authenticated = true
+	session.Values["authenticated"] = true
 	// Save session cookie
 	err = session.Save(req, res)
 	if err != nil {
 		// Handle session save error
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
-	} else {
-		http.Redirect(res, req, "/profile.html", http.StatusFound)
 	}
+	http.Redirect(res, req, "/profile", http.StatusFound)
+}
+
+// Logic for logout
+func (app application) logoutHandler(res http.ResponseWriter, req *http.Request) {
+	session, _ := app.store.Get(req, "cookie-name")
+	session.Values["authenticated"] = false
+	session.Save(req, res)
+	http.Redirect(res, req, "/", http.StatusFound)
 }
 
 // Handler function for user registration
@@ -283,17 +293,22 @@ func (app application) registerHandler(res http.ResponseWriter, req *http.Reques
 }
 
 type showRecipes struct {
-	Rec []models.Recipe
+	Rec           []models.Recipe
+	Authenticated bool
 }
 
 // Show recipes
-func (app application) showHandler(res http.ResponseWriter, req *http.Request) {
-	t := template.Must(template.ParseFiles("./ui/html/index.page.gohtml"))
+func (app *application) showHandler(res http.ResponseWriter, req *http.Request) {
+	var out showRecipes
+	session, _ := app.store.Get(req, "cookie-name")
+	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
+		out.Authenticated = true
+	}
+
 	db := app.client.Database("recipes")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	cursor, _ := db.ListCollectionNames(ctx, bson.M{}, nil)
-	var out showRecipes
 
 	for _, name := range cursor {
 		col := db.Collection(name)
@@ -309,7 +324,19 @@ func (app application) showHandler(res http.ResponseWriter, req *http.Request) {
 			out.Rec = append(out.Rec, result)
 		}
 	}
+	file, _ := os.Open("error.txt")
+	if err := app.templates.ExecuteTemplate(res, "index.page.gohtml", out); err != nil {
+		fmt.Fprint(file, "Error: ", err)
+	}
+	fmt.Fprint(file, "OK")
+}
 
-	t.Execute(res, out)
-
+// Show profile
+func (app *application) profileHandler(res http.ResponseWriter, req *http.Request) {
+	var out showRecipes
+	session, _ := app.store.Get(req, "cookie-name")
+	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
+		out.Authenticated = true
+	}
+	app.templates.ExecuteTemplate(res, "profile.page.gohtml", nil)
 }

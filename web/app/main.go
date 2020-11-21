@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/gob"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"time"
@@ -63,6 +64,7 @@ func main() {
 	app.Routes()
 
 	// serve static pages
+	app.templates = template.Must(template.ParseGlob("./ui/html/*"))
 	app.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./ui/static/")))
 
 	// Start server for debug
@@ -79,7 +81,7 @@ type application struct {
 	router    *mux.Router           // Router
 	client    *mongo.Client         // Declare mongo client globally
 	store     *sessions.CookieStore // Cookies/Session
-	templates packr.Box             // templates
+	templates *template.Template    // templates
 	static    packr.Box
 	// SSl
 

@@ -16,10 +16,12 @@ type Pantry struct {
 
 // Recipe struct for mongodb
 type Recipe struct {
-	ID          primitive.ObjectID `bson:"_id,omitempty"`
-	Name        string             `bson:"name,omitempty"`
-	Class       string             `bson:"class,omitempty"`
-	Ingredients []string           `bson:"ingredients,omitempty"`
+	ID           primitive.ObjectID `bson:"_id,omitempty"`
+	Name         string             `bson:"name,omitempty"`
+	Category     string             `bson:"category,omitempty"`
+	Ingredients  []string           `bson:"ingredients,omitempty"`
+	PrepTime     string             `bson:"prepTime,omitempty"`
+	Instructions []string           `bson:"instructions,omitempty"`
 }
 
 // User struct to hold user information
