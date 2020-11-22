@@ -10,6 +10,7 @@
   <form method= "get" action="/">
 	<button class="button buttonhome">Home</button>
   </form>
+  
   {{with .Authenticated}}
     <form method= "get" action="/logout">
     <button class="button button1">Logout</button>
@@ -19,15 +20,21 @@
     <button class="button button1">Login</button>
     </form>
   {{end}}
+
   {{with not .Authenticated}}
-  <form method= "get" action="/register">
-	<button class="button button1">Register</button>
-  </form>
+    <form method= "get" action="/register">
+    <button class="button button1">Register</button>
+    </form>
   {{end}}
+
   <form method= "get" action="about.html">
-	<button class="button button1">About</button>
+	  <button class="button button1">About</button>
   </form>
-  <form method= "get" action="/">
-	<button class="button button1">Browse Recipes</button>
-  </form>
+  {{if .Authenticated}}
+    {{if ne "/profile" .Profile}}
+      <form method= "get" action="/profile">
+      <button class="button button1">Profile</button>
+      </form>
+    {{end}}
+  {{end}}
 </ul>

@@ -9,7 +9,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"os"
+	"net/url"
 	"strings"
 	"time"
 
@@ -20,8 +20,16 @@ import (
 	"mammal.shell/kitchenKomplete/models"
 )
 
+// struct for passsing data to the html templates
+type templateData struct {
+	Rec           []models.Recipe
+	Authenticated bool
+	Profile       string
+}
+
 // Pantry page handler
 func (app application) allRecipePage(res http.ResponseWriter, req *http.Request) {
+
 	// Get userId from cookie or login
 
 	// Find this users recipe collection
@@ -52,35 +60,25 @@ func (app application) allRecipePage(res http.ResponseWriter, req *http.Request)
 // Recipe page handler
 func (app application) createRecipePage(res http.ResponseWriter, req *http.Request) {
 	// Sample Write to the database
+	// Find out who the user is
+	// Pull the user info from database/cookie
+	// Add
 	// Update this to use forms
-	t, err1 := template.ParseFiles("./ui/html/addrecipe.page.gohtml")
-	if err1 != nil {
-		fmt.Println(err1.Error())
-		return
-	}
-
-	// Give back support template on anything other than post
-	if req.Method != http.MethodPost {
-		err2 := t.Execute(res, nil)
-		if err2 != nil {
-			fmt.Println(err2.Error())
-		}
-		return
-	}
-
-	collection := app.client.Database("recipes").Collection("test_user")
+	session, _ := app.store.Get(req, "cookie-name")
+	sessionUser := session.Values["user"]
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+	usrRecipeCollection := app.client.Database("recipes").Collection(sessionUser.(string))
 
 	r := models.Recipe{
 		ID:           primitive.NewObjectID(),
-		Name:         req.FormValue("title"),
+		Name:         req.FormValue("name"),
 		Category:     req.FormValue("category"),
 		Ingredients:  strings.Split(req.FormValue("ingredients"), ","),
 		PrepTime:     req.FormValue("preptime"),
 		Instructions: strings.Split(req.FormValue("instructions"), ","),
 	}
-	collection.InsertOne(ctx, r)
+	usrRecipeCollection.InsertOne(ctx, r)
 	http.Redirect(res, req, "/add_recipe.html", http.StatusFound)
 }
 
@@ -180,8 +178,8 @@ func (app application) loginHandler(res http.ResponseWriter, req *http.Request) 
 	defer cancel()
 
 	// Look for a match in the database
-	var temp1 models.User
-	err = collection.FindOne(ctx, bson.M{"user_id": usr.UserID}).Decode(&temp1)
+	var newUser models.User
+	err = collection.FindOne(ctx, bson.M{"user_id": usr.UserID}).Decode(&newUser)
 	if err != nil {
 		// Handle error if user_id is not in database
 		res.WriteHeader(http.StatusInternalServerError)
@@ -190,7 +188,7 @@ func (app application) loginHandler(res http.ResponseWriter, req *http.Request) 
 		return
 	}
 	userPass := []byte(req.FormValue("passwd"))
-	dbPass := []byte(temp1.HashedPassword)
+	dbPass := []byte(newUser.HashedPassword)
 	if passErr := bcrypt.CompareHashAndPassword(dbPass, userPass); passErr != nil {
 		usr.Errors["Login"] = "Username or Password isn't correct."
 		t.Execute(res, usr)
@@ -198,8 +196,9 @@ func (app application) loginHandler(res http.ResponseWriter, req *http.Request) 
 	}
 
 	// Should be authenticated at this point on
-	// temp1.Authenticated = true
+	// newUser.Authenticated = true
 	session.Values["authenticated"] = true
+	session.Values["user"] = newUser.UserID
 	// Save session cookie
 	err = session.Save(req, res)
 	if err != nil {
@@ -214,12 +213,19 @@ func (app application) loginHandler(res http.ResponseWriter, req *http.Request) 
 func (app application) logoutHandler(res http.ResponseWriter, req *http.Request) {
 	session, _ := app.store.Get(req, "cookie-name")
 	session.Values["authenticated"] = false
+	session.Values["user"] = nil
 	session.Save(req, res)
 	http.Redirect(res, req, "/", http.StatusFound)
 }
 
 // Handler function for user registration
 func (app application) registerHandler(res http.ResponseWriter, req *http.Request) {
+	var out templateData
+	session, _ := app.store.Get(req, "cookie-name")
+	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
+		out.Authenticated = true
+	}
+
 	t, err1 := template.ParseFiles("./ui/html/register.page.gohtml")
 	if err1 != nil {
 		fmt.Println(err1.Error())
@@ -282,6 +288,8 @@ func (app application) registerHandler(res http.ResponseWriter, req *http.Reques
 		if err == mongo.ErrNoDocuments {
 			collection.InsertOne(ctx, newusr)
 			// Redirect to profile page
+			session.Values["user"] = newusr.UserID
+			session.Save(req, res)
 			http.Redirect(res, req, "/profile.html", http.StatusFound)
 			return
 		}
@@ -292,14 +300,9 @@ func (app application) registerHandler(res http.ResponseWriter, req *http.Reques
 	}
 }
 
-type showRecipes struct {
-	Rec           []models.Recipe
-	Authenticated bool
-}
-
 // Show recipes
 func (app *application) showHandler(res http.ResponseWriter, req *http.Request) {
-	var out showRecipes
+	var out templateData
 	session, _ := app.store.Get(req, "cookie-name")
 	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
 		out.Authenticated = true
@@ -324,19 +327,20 @@ func (app *application) showHandler(res http.ResponseWriter, req *http.Request) 
 			out.Rec = append(out.Rec, result)
 		}
 	}
-	file, _ := os.Open("error.txt")
-	if err := app.templates.ExecuteTemplate(res, "index.page.gohtml", out); err != nil {
-		fmt.Fprint(file, "Error: ", err)
-	}
-	fmt.Fprint(file, "OK")
+	app.templates.ExecuteTemplate(res, "index.page.gohtml", out)
 }
 
 // Show profile
 func (app *application) profileHandler(res http.ResponseWriter, req *http.Request) {
-	var out showRecipes
+	var out templateData
 	session, _ := app.store.Get(req, "cookie-name")
 	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
 		out.Authenticated = true
+	} else {
+		http.Redirect(res, req, "/", http.StatusForbidden)
+		return
 	}
-	app.templates.ExecuteTemplate(res, "profile.page.gohtml", nil)
+	u, _ := url.Parse(req.URL.String())
+	out.Profile = u.Path
+	app.templates.ExecuteTemplate(res, "profile.page.gohtml", out)
 }

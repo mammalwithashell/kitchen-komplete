@@ -22,6 +22,7 @@ type Recipe struct {
 	Ingredients  []string           `bson:"ingredients,omitempty"`
 	PrepTime     string             `bson:"prepTime,omitempty"`
 	Instructions []string           `bson:"instructions,omitempty"`
+	OwnerID      string             `bson:"ownerID,omitempty"`
 }
 
 // User struct to hold user information
@@ -32,7 +33,7 @@ type User struct {
 	Email          string             `bson:"email,omitempty"`
 	HashedPassword string             `bson:"hashedPassword,omitempty"`
 	Authenticated  bool               `bson:"auth,omitempty"`
-	Errors         map[string]string
+	Errors         map[string]string  `bson:"error,omitempty"`
 }
 
 // Support struct to pass variable to support template

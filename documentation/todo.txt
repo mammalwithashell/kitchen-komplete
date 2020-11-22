@@ -1,0 +1,28 @@
+* MongoDB database
+~ Docker file
+* Define datamodel
+use https (secure) on server
+cookies
+sessions
+* user login w/ database
+* display recipes on homepage
+* have a html page for pantry
+Middleware
+Tests
+
+next weak:
+
+1. CSS and html spacing and layout
+    I. user's account information
+        a. add bio to user's profile page
+        b. edit name, email .... 
+    II. recipes information:
+        a. Estimated Cooking time field
+        b. Preparation field
+        c. tools? maybe if its' not complicated
+
+fit about page dynamic html with the header.layout
+make recipes private by default
+enhance display public recipes layout
+support page
+enhance pantry
