@@ -4,4 +4,5 @@
 __pycache__/*
 documentation/use_case.drawio
 CSCE-3444.code-workspace
-app.exe
+.env
+bfg.jar

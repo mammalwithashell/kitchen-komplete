@@ -26,3 +26,6 @@ make recipes private by default
 enhance display public recipes layout
 support page
 enhance pantry
+
+
+HTML Home page pictures

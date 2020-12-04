@@ -6,24 +6,41 @@
 		
 <div class="content">
   <div class="content-inside">
-		<!-- <h1> "This is the user profile page (profile.html)"</h1> -->
-		<h1>User Profile</h1>
+		<!-- <h1> "This is the user profile page (/profile)"</h1> -->
+		<h1>{{.User}}</h1>
     <div class="row">
       <div class="column_small" style="background-color:#aaa;">
         <img src="favicon.jpg" width="60%" height="50%"><br></br>
-	      <form method= "get" action="pantry.html">
-	        <button class="button button_submit">Pantry</button>
-		    </form>
-	      <form method= "get" action="add_recipe.html" style="position: center">
+        <form method= "get" action="pantry.html">
+        <button class="button button_submit">Pantry</button>
+        </form>
+	      <form method= "get" action="/create-recipe" style="position: center">
 		      <button class="button button_submit">Add Recipes</button>
 	      </form>
 	    </div>
     </div>
     <div class="column_wide">
       <h2>Saved Recipes</h2>
-      <div class="ex1" style="height: 70%" style="width: 500px">
-        orem ipsum dolor sit amet,	
-      </div>
+      {{range .Rec}}	
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <!-- Picture goes here -->
+              <h1>{{.Name}}</h1>
+              <p>{{.Category}}</p>
+              <p>{{.PrepTime}}</p>
+            </div>
+            <div class="flip-card-back">
+              <h1>{{.OwnerID}}</h1>
+              <ul>
+                {{range .Instructions}}
+                  <li>{{.}}</li>
+                {{end}}
+              </ul>
+            </div>
+          </div>
+        </div>
+      {{end}}
     </div>
   </div>
 </div>

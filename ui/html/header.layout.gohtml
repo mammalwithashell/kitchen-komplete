@@ -26,12 +26,13 @@
     <button class="button button1">Register</button>
     </form>
   {{end}}
-
-  <form method= "get" action="about.html">
-	  <button class="button button1">About</button>
-  </form>
+  {{if ne "/about" .Path}}
+    <form method= "get" action="/about">
+      <button class="button button1">About</button>
+    </form>
+  {{end}}
   {{if .Authenticated}}
-    {{if ne "/profile" .Profile}}
+    {{if ne "/profile" .Path}}
       <form method= "get" action="/profile">
       <button class="button button1">Profile</button>
       </form>

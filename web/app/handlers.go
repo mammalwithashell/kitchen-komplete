@@ -24,7 +24,8 @@ import (
 type templateData struct {
 	Rec           []models.Recipe
 	Authenticated bool
-	Profile       string
+	Path          string
+	User          string
 }
 
 // Pantry page handler
@@ -58,14 +59,26 @@ func (app application) allRecipePage(res http.ResponseWriter, req *http.Request)
 }
 
 // Recipe page handler
-func (app application) createRecipePage(res http.ResponseWriter, req *http.Request) {
+func (app *application) createRecipeHandler(res http.ResponseWriter, req *http.Request) {
 	// Sample Write to the database
 	// Find out who the user is
 	// Pull the user info from database/cookie
 	// Add
 	// Update this to use forms
+	var out templateData
 	session, _ := app.store.Get(req, "cookie-name")
 	sessionUser := session.Values["user"]
+	if session.Values["authenticated"] != nil {
+		out.Authenticated = session.Values["authenticated"].(bool)
+	}
+
+	if req.Method == http.MethodGet {
+		app.templates.ExecuteTemplate(res, "add_recipe.page.gohtml", out)
+		return
+	}
+
+	// If the recipe is set to public, a
+
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	usrRecipeCollection := app.client.Database("recipes").Collection(sessionUser.(string))
@@ -77,24 +90,26 @@ func (app application) createRecipePage(res http.ResponseWriter, req *http.Reque
 		Ingredients:  strings.Split(req.FormValue("ingredients"), ","),
 		PrepTime:     req.FormValue("preptime"),
 		Instructions: strings.Split(req.FormValue("instructions"), ","),
+		OwnerID:      sessionUser.(string),
+		Public:       req.FormValue("privacy"),
 	}
 	usrRecipeCollection.InsertOne(ctx, r)
-	http.Redirect(res, req, "/add_recipe.html", http.StatusFound)
+	app.templates.ExecuteTemplate(res, "add_recipe.page.gohtml", out)
 }
 
 // display recipes saved in database
-func (app application) readRecipePage(res http.ResponseWriter, req *http.Request) {
+func (app application) readRecipe(res http.ResponseWriter, req *http.Request) {
 	// Maybe a table of all recipes given by user
 }
 
 // update recipe saved in database
-func (app application) updateRecipePage(res http.ResponseWriter, req *http.Request) {
+func (app application) updateRecipe(res http.ResponseWriter, req *http.Request) {
 	// Update in the CRUD
 
 }
 
 // delete recipe saved in database
-func (app application) deleteRecipeHandlerFunc(res http.ResponseWriter, req *http.Request) {
+func (app application) deleteRecipeHandler(res http.ResponseWriter, req *http.Request) {
 	// Delete from the CRUD
 	//vars := mux.Vars(req)
 }
@@ -105,7 +120,7 @@ func (app application) pantryHandler(res http.ResponseWriter, req *http.Request)
 }
 
 // Support page handler
-func (app application) supportPage(res http.ResponseWriter, req *http.Request) {
+func (app application) supportHandler(res http.ResponseWriter, req *http.Request) {
 	// Let users report issues
 	t, err1 := template.ParseFiles("./ui/html/support.page.gohtml")
 	if err1 != nil {
@@ -140,22 +155,6 @@ func (app application) supportPage(res http.ResponseWriter, req *http.Request) {
 	return
 }
 
-// Hash Passwords
-func Hash(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-	return string(bytes), err
-}
-
-// Check passwords
-func checkHash(password, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	if err != nil {
-		fmt.Println("Check Hash Err:", err)
-		return false
-	}
-	return true
-}
-
 // Handler funcion for user login
 func (app application) loginHandler(res http.ResponseWriter, req *http.Request) {
 	session, err := app.store.Get(req, "cookie-name")
@@ -173,7 +172,7 @@ func (app application) loginHandler(res http.ResponseWriter, req *http.Request) 
 	}
 
 	// Select the collection to be queried
-	collection := app.client.Database("testdb").Collection("user")
+	collection := app.client.Database("Users").Collection("user")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -250,7 +249,7 @@ func (app application) registerHandler(res http.ResponseWriter, req *http.Reques
 
 	// Check if Name and Username were valid
 	if req.FormValue("name") == "" {
-		newusr.Errors["Name"] = "Please enter a name"
+		newusr.Errors["Name"] = "This field cannot be empty"
 		t.Execute(res, newusr)
 		return
 	}
@@ -260,7 +259,7 @@ func (app application) registerHandler(res http.ResponseWriter, req *http.Reques
 		t.Execute(res, newusr)
 		return
 	}
-	// Check if email was valid
+	// Check if email & password was valid
 	if newusr.Validate() == false || newusr.Password(req.FormValue("passwd")) == false {
 		t.Execute(res, newusr)
 		return
@@ -276,7 +275,7 @@ func (app application) registerHandler(res http.ResponseWriter, req *http.Reques
 	newusr.HashedPassword = string(hash)
 
 	// Access database
-	collection := app.client.Database("testdb").Collection("user")
+	collection := app.client.Database("Users").Collection("user")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -289,11 +288,13 @@ func (app application) registerHandler(res http.ResponseWriter, req *http.Reques
 			collection.InsertOne(ctx, newusr)
 			// Redirect to profile page
 			session.Values["user"] = newusr.UserID
+			session.Values["authenticated"] = true
 			session.Save(req, res)
-			http.Redirect(res, req, "/profile.html", http.StatusFound)
+			http.Redirect(res, req, "/profile", http.StatusFound)
 			return
 		}
 	} else {
+
 		newusr.Errors["User"] = "Username Already exists!"
 		t.Execute(res, newusr)
 		return
@@ -303,10 +304,7 @@ func (app application) registerHandler(res http.ResponseWriter, req *http.Reques
 // Show recipes
 func (app *application) showHandler(res http.ResponseWriter, req *http.Request) {
 	var out templateData
-	session, _ := app.store.Get(req, "cookie-name")
-	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
-		out.Authenticated = true
-	}
+	out.Authenticated = auth(app.store.Get(req, "cookie-name"))
 
 	db := app.client.Database("recipes")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -315,7 +313,7 @@ func (app *application) showHandler(res http.ResponseWriter, req *http.Request) 
 
 	for _, name := range cursor {
 		col := db.Collection(name)
-		cur, _ := col.Find(ctx, bson.D{})
+		cur, _ := col.Find(ctx, bson.M{"public": "Public"})
 
 		// Loop through found documents in collection
 		for cur.Next(ctx) {
@@ -334,13 +332,32 @@ func (app *application) showHandler(res http.ResponseWriter, req *http.Request) 
 func (app *application) profileHandler(res http.ResponseWriter, req *http.Request) {
 	var out templateData
 	session, _ := app.store.Get(req, "cookie-name")
-	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
-		out.Authenticated = true
-	} else {
+	if out.Authenticated = auth(session, nil); !out.Authenticated {
 		http.Redirect(res, req, "/", http.StatusForbidden)
 		return
 	}
 	u, _ := url.Parse(req.URL.String())
-	out.Profile = u.Path
+	out.Path = u.Path
+	out.User = session.Values["user"].(string)
+
+	userRecipeCollection := app.client.Database("recipes").Collection(out.User)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	cur, _ := userRecipeCollection.Find(ctx, bson.D{})
+	defer cur.Close(ctx)
+
+	// Store all recipes in out.Rec
+	if err := cur.All(ctx, &out.Rec); err != nil {
+		log.Fatal(err)
+	}
 	app.templates.ExecuteTemplate(res, "profile.page.gohtml", out)
+}
+
+// Show about page
+func (app *application) aboutHandler(res http.ResponseWriter, req *http.Request) {
+	var out templateData
+	out.Authenticated = auth(app.store.Get(req, "cookie-name"))
+	u, _ := url.Parse(req.URL.String())
+	out.Path = u.Path
+	app.templates.ExecuteTemplate(res, "about.page.gohtml", out)
 }

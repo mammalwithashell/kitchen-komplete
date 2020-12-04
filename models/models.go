@@ -23,6 +23,7 @@ type Recipe struct {
 	PrepTime     string             `bson:"prepTime,omitempty"`
 	Instructions []string           `bson:"instructions,omitempty"`
 	OwnerID      string             `bson:"ownerID,omitempty"`
+	Public       string             `bson:"public,omitempty"`
 }
 
 // User struct to hold user information
@@ -84,7 +85,7 @@ func (usr *User) Password(pass string) bool {
 	}
 
 	if !upp || !low || !num || !sym || tot < 8 {
-		usr.Errors["Password"] = "Please make sure your password includes at least [A-Z], [0-9], and symbols."
+		usr.Errors["Password"] = "Please make sure your password includes at least [A-Z], [0-9], symbols and has more than 7 characters."
 		return false
 	}
 

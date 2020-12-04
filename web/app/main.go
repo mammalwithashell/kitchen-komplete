@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gobuffalo/packr"
@@ -40,17 +41,25 @@ func init() {
 }
 
 func main() {
+	/* Uncomment to load environment variables from .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	} */
 
-	port := ":8082"
+	// Set environment variables for static ip service
+	os.Setenv("HTTP_PROXY", os.Getenv("IPB_HTTP"))
+	os.Setenv("HTTPS_PROXY", os.Getenv("IPB_HTTPS"))
+
+	port := os.Getenv("PORT")
+	dburi := os.Getenv("MONGODB_URI")
 	fmt.Println("Starting Kitchen Komplete application...")
 
 	// Connect to mongodb client
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var err error
-	app.client, err = mongo.Connect(ctx, options.Client().ApplyURI(
-		"mongodb+srv://james:VBQHfudvGQyoSyyf@cluster0.ehf5d.mongodb.net/sample_supplies?retryWrites=true&w=majority",
-	))
+	app.client, err = mongo.Connect(ctx, options.Client().ApplyURI(dburi))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -69,9 +78,9 @@ func main() {
 
 	// Start server for debug
 	fmt.Println("Local Server running on port " + port)
-	fmt.Println("http://localhost" + port)
+	fmt.Println("http://localhost:" + port)
 
-	if err := http.ListenAndServe(port, app.router); err != nil {
+	if err := http.ListenAndServe(":"+port, app.router); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
 }
