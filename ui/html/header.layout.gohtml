@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="styles.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<ul>
+  <form method= "get" action="/">
+	<button class="button buttonhome">Home</button>
+  </form>
+  
+  {{with .Authenticated}}
+    <form method= "get" action="/logout">
+    <button class="button button1">Logout</button>
+    </form>
+  {{else}}
+    <form method= "get" action="/login">
+    <button class="button button1">Login</button>
+    </form>
+  {{end}}
+
+  {{with not .Authenticated}}
+    <form method= "get" action="/register">
+    <button class="button button1">Register</button>
+    </form>
+  {{end}}
+  {{if ne "/about" .Path}}
+    <form method= "get" action="/about">
+      <button class="button button1">About</button>
+    </form>
+  {{end}}
+  {{if .Authenticated}}
+    {{if ne "/profile" .Path}}
+      <form method= "get" action="/profile">
+      <button class="button button1">Profile</button>
+      </form>
+    {{end}}
+  {{end}}
+</ul>

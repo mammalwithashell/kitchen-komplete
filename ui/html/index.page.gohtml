@@ -1,0 +1,37 @@
+{{ template "header.layout.gohtml" .}}
+
+<!-- main section starts here -->
+
+<div class="content">
+  <div class="content-inside">
+    <!-- <h1> "This is the landing page/home page without a user logged in (index.html)"</h1> -->
+    <h1 style="text-align: center">Kitchen Komplete</h1>
+    
+      {{range .Rec}}
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <!-- Picture goes here -->
+              <h1>{{.Name}}</h1>
+              <p>{{.Category}}</p>
+              <p>{{.PrepTime}}</p>
+            </div>
+            <div class="flip-card-back">
+              <h1>{{.OwnerID}}</h1>
+              <ul>
+              {{range .Instructions}}
+                <li>{{.}}</li>
+              {{end}}
+              </ul>
+              <a href="/update/{{.ID}}">Edit</a>
+            </div>
+          </div>
+        </div>
+      {{end}}
+  </div>
+</div>
+
+<!-- main section ends here -->
+<footer class="footer"><p>Kitchen Komplete © 2020</p></footer>
+</body>
+</html>

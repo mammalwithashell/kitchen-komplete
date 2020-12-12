@@ -1,0 +1,47 @@
+{{ template "header.layout.gohtml" .}}
+
+<!-- main section starts here -->
+
+		
+<div class="content">
+  <div class="content-inside">
+    <!-- <h1> "This is the user add recipes page (add_recipe.html)"</h1> -->
+    <h1>Add Recipes</h1>
+    <div class="row">
+      <div class="column_small" style="background-color:#aaa;">
+        <img src="favicon.jpg" width="60%" height="50%"><br></br>
+        <form method= "Post" action="/create-recipe">
+          <label>Title:</label><br/>
+          <input type="text" name="name"><br/>
+          <label>Category:</label><br/>
+          <select>
+            <option value="entree">Entree</option>
+            <option value="snack">Snack</option>
+            <option value="drink">Drink</option>
+            <option value="side">Side</option>
+          </select><br/>
+          <label>Ingredients:</label><br />
+          <textarea name="ingredients"></textarea><br/>
+          <label>Preparation time:</label><br/>
+          <input type="text" name="preptime"><br/>
+          <label>Instructions:</label><br />
+          <textarea name="instructions"></textarea><br/>
+          <label>Privacy:<label><br />
+          <input type="radio" id="Public" name="privacy" value="Public">
+          <label for="Public">Public</label><br>
+          <input type="radio" id="Private" name="privacy" value="Private">
+          <label for="Private">Private</label><br>
+          <button class="button button_submit">Submit</button>
+        </form>
+        <form method= "get" action="/profile" style="position: center">
+            <button class="button button_submit">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- main section ends here -->
+<footer class="footer"><p>Kitchen Komplete © 2020</p></footer>
+</body>
+</html>

@@ -1,0 +1,27 @@
+//Go Http server
+sentdex go tutorial
+https://www.youtube.com/playlist?list=PLQVvvaa0QuDeF3hP0wQoSxpkqgRcgxMqX
+https://www.gorillatoolkit.org/
+https://astaxie.gitbooks.io/build-web-application-with-golang/content/en/03.4.html
+https://golang.org/doc/articles/wiki/
+https://echo.labstack.com/
+
+// gorillatoolkit sessions
+https://curtisvermeeren.github.io/2018/05/13/Golang-Gorilla-Sessions.html
+
+
+https
+https://medium.com/rungo/secure-https-servers-in-go-a783008b36da
+
+// Bundle assets with go binary
+https://youtu.be/DPFJePP8cEc
+
+// To import from github repositories that are private
+https://medium.com/cloud-native-the-gathering/go-modules-with-private-git-repositories-dfe795068db4
+https://medium.com/swlh/go-modules-with-private-git-repository-3940b6835727
+
+Database
+// Go rest api with mongodb https://youtu.be/oW7PMHEYiSk
+https://github.com/mongodb/mongo-go-driver
+https://godoc.org/go.mongodb.org/mongo-driver/mongo
+https://youtu.be/WEYtAKYbB6k

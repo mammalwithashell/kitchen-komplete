@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="styles.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<ul>
+  <form method= "get" action="user_home.html">
+	<button class="button buttonhome">Home</button>
+  </form>
+  <form method= "get" action="index.html">
+	<button class="button button1">Logout</button>
+  </form>
+  <form method= "get" action="/about">
+	<button class="button button1">About</button>
+  </form>
+  <form method= "get" action="/profile">
+	<button class="button button1">Profile</button>
+  </form>
+</ul>
+
+<!-- main section starts here -->
+
+		
+<div class="content">
+    <div class="content-inside">
+		<!-- <h1> "This is the user add recipes page (add_recipe.html)"</h1> -->
+		<h1>User pantry</h1>
+        
+ <div class="row">
+  <div class="column_small" style="background-color:#aaa;">
+	<br></br>
+    <label for="recipe content">Category:</label>
+            <textarea rows="2" cols="25">
+            </textarea><br></br>
+    <label for="recipe content">Quantity:</label>
+            <textarea rows="2" cols="25">
+            </textarea><br></br>
+    <label for="recipe content">Expiration Date:</label>
+            <textarea rows="2" cols="25">
+            </textarea><br></br>
+	<form method= "get" action="pantry.html">
+	<button class="button button_submit">Update Pantry</button>
+		</form>
+        <form method= "get" action="/profile" style="position: center">
+            <button class="button button_submit">Cancel</button>
+        </form>
+	    </div>
+    </div>
+    <div class="column_wide">
+        <div class="ex1" style="height: 100%" style="width: 100%">
+        <p>Display area for user pantry</p>
+        </div>
+    </div>
+    </div>
+  </div>
+
+<!-- main section ends here -->
+<footer class="footer"><p>Kitchen Komplete © 2020</p></footer>
+</body>
+</html>
