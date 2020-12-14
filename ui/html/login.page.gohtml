@@ -1,46 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<link rel="stylesheet" href="styles.css">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-
-<ul>
-	<form method= "get" action="index.html">
-		<button class="button buttonhome">Home</button>
-	</form>
-	<form method= "get" action="/about">
-		<button class="button button1">About</button>
-	</form>
-	<form method= "get" action="index.html">
-		<button class="button button1">Browse Recipes</button>
-	</form>
-</ul>
+{{ template "header.layout.gohtml" .}}
 
 <!-- main section starts here -->
 <div class="content">
-    <div class="center">
-		<div class="center">
-		<!-- <h1>This is the login form page (login.html)</h1><br></br> -->
-			<h1>User Login</h1>
-			<form method= "POST" action="/login">
-				<div>
-					<label for="fname">Username</label>
-					<input type="text" id="fname" name="username"><br><br>
-					<label for="lname">Password</label>
-					<input type="password" id="lname" name="passwd"><br><br>
-					{{ with .Errors.Login }}
+	<!-- <h1>This is the login form page (login.html)</h1><br></br> -->
+	<h1>User Login</h1>
+	<div class="content-inside">
+		<form method= "POST" action="/login">
+			<div>
+				<label for="fname">Username</label>
+				<input type="text" id="fname" name="username"><br><br>
+				<label for="lname">Password</label>
+				<input type="password" id="lname" name="passwd"><br><br>
+				{{ with .UserObj.Errors.Login }}
 					<p class="error">{{ . }}</p>
-					{{ end }}
-                </div>
-				<input type="submit">
-			</form>
-		</div>
-    </div>
+				{{ end }}
+				<button class="button_submit button3">Submit</button>
+			</div>
+		</form>
+	</div>
 </div>
-<!-- main section ends here -->
 
-<footer class="footer"><p>Kitchen Komplete © 2020</p></footer>
-</body>
-</html>
+<!-- main section ends here -->
+<footer class="footer">
+  <p>Kitchen Komplete © 2020</p>
+</footer>

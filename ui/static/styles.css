@@ -4,10 +4,12 @@
 }
 
 ul {
+  /* position: fixed; */
+  overflow: hidden;
   list-style-type: none;
   margin: 0;
   padding: 1rem;
-  background-color: #006AFE;
+  background-color: #12232E;
 }
 
 li {
@@ -20,32 +22,112 @@ form {
 
 
 html, body {
-  height: 100%;
+  height: auto;
   margin: 0;
 }
 
+/* h2{
+  position: absolute;
+  top: 0; 
+  width: 100%; 
+} */
+
+/* p{
+  position: absolute;
+  top: 100px; 
+  width: 100%; 
+} */
+
+.hd{
+  color: limegreen;
+  position: absolute;
+  top: 0; 
+  width: 100%; 
+}
+
+.bd{
+  color: limegreen;
+  position: absolute;
+  top: 100px; 
+  width: 100%; 
+}
+
 .content {
+  /* overflow: auto; */
   min-height: 100%;
+  /* position: absolute; */
+  text-align: center;
+  align-items: center ;
+  /* top: 40px; */
+  /* bottom: 20px; */
 }
 
 .content-inside {
-  padding: 20px;
-  padding-bottom: 50px;
+  background-color: #12232E;
+  float: center;
+  overflow: auto;
+  height: 500px;
+  width: auto;
+  margin: 100px;
+  /* padding: 20px; */
 }
 
 .footer {
   text-align: center;
-  background-color: #006AFE;
+  background-color: #12232E;
   color: white;
-  height: 50px;
+  height: auto;
   margin-top: -50px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
 }
 
 .button {
-  border-radius: 10px;
-  background-color: #9BC6FF;
-  border: none;
+  float: right;
+  background-color: #12232E;
   color: white;
+  border: none;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button1 {
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  /* vertical-align: middle; */
+  display: inline-block;
+}
+
+.button1:hover {
+  background-color: #2980B9; /*#2980B9 */
+}
+
+.buttonhome {
+  float: left;
+/*   border-radius: 10px; */
+  background-color: #12232E;
+  color: white;
+  border: none;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.buttonhome:hover {
+  background-color: #2980B9;
+}
+
+.button2 {
+  /* border-radius: 10px; */
+  background-color: #12232E; /* 9BC6FF */
+  border: none;
+  color: #12232E;
   padding: 16px 16px;
   text-align: center;
   text-decoration: none;
@@ -55,30 +137,38 @@ html, body {
   cursor: pointer;
 }
 
-.button1 {
-  float: right;
-  background-color: white; 
-  color: black; 
-  border: 2px solid #9BC6FF;
+.button3 {
+  /* border-radius: 10px; */
+  background-color: #12232E; /* 9BC6FF */
+  border: none;
+  color: #203647;
+  padding: 16px 16px;
+  text-align: center;
+  align-items: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  margin-left: 60px;
+  cursor: pointer;
 }
 
-.button1:hover {
-  background-color: #9BC6FF;
-  color: white;
-}
 
-.buttonhome {
-  background-color: white; 
-  color: black; 
-  border: 2px solid #9BC6FF;
-}
-
-.buttonhome:hover {
-  background-color: #9BC6FF;
-  color: white;
-}
 
 .button_submit {
+  background-color: 12232E;
+  margin-left: 50px; 
+  color: white; 
+  border: none;
+  margin-right:500px;
+}
+
+.button_submit:hover {
+  background-color: #2980B9;
+  color: white;
+}
+
+.button_edit {
   background-color: white;
   margin-left: 50px; 
   color: black; 
@@ -86,14 +176,26 @@ html, body {
   margin-right:500px;
 }
 
-.button_submit:hover {
-  background-color: #9BC6FF;
+.button_edit:hover {
+  background-color: #2980B9;
+  color: white;
+}
+
+.button_delete {
+  background-color: white;
+  margin-left: 50px; 
+  color: black; 
+  border: 2px solid #9BC6FF;
+  margin-right:500px;
+}
+.button_delete:hover {
+  background-color: #2980B9;
   color: white;
 }
 
 div.ex1 {
   background-color: #9BC6FF;
-  text-padding: 15px;
+  /* text-padding: 15px; */
   position: responsive;
   border: 2px solid black;
   margin-left: 15%;
@@ -110,11 +212,11 @@ div.ex1 {
 /* Create two equal columns that floats next to each other */
 .column_small {
   float: left;
-  align-items: center;
-  width: 30%;
+  align-items: center ;
+  /* width: 20%; */
   padding: 10px;
-  margin: 10px;
-  height: 400px;
+  margin: 30px;
+  height: auto;
 }
 
 .column_wide {
@@ -143,7 +245,7 @@ div.container4 p {
   align-items: center;
   position: absolute;
   top: 50%;
-  left: 65%;
+  left: 60%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
@@ -151,9 +253,10 @@ div.container4 p {
 /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
 .flip-card {
   background-color: transparent;
+  /* margin: 10px; */
   width: 300px;
-  height: 200px;
-  border: 1px solid white;
+  height: 300px;
+  /* border: 10px; */
   perspective: 1000px; /* Remove this if you don't want the 3D effect */
 }
 
@@ -183,12 +286,85 @@ div.container4 p {
 
 /* Style the front side (fallback if image is missing) */
 .flip-card-front {
-  background-color: #bbb;
-  color: black;
+  background-color: #203647;
+  background-image: url("food-1.jpg");
+  color: white;
 }
 
 /* Style the back side */
 .flip-card-back {
-  background-color: dodgerblue;
+  overflow: auto;
+  background-color: #2980B9;
   color: white;
-  transform: rotateY(180deg);}
+  transform: rotateY(180deg);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  border: 1px solid #203647;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #203647;  
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #203647;  
+}
+
+/* Dropdown menu */
+  .dropbtn {
+  float: right;
+  background-color: #12232E;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  margin: 4px 2px;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #2980B9;
+}
+
+.dropdown {
+  float: right;
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #2980B9;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+
+/* .footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color: 12232E;
+   color: white;
+   text-align: center;
+} */

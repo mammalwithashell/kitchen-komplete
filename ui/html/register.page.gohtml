@@ -1,72 +1,51 @@
- <!DOCTYPE html>
-<html>
-<head>
-	<link rel="stylesheet" href="styles.css">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-
-<ul>
-  <form method= "get" action="/">
-	<button class="button buttonhome">Home</button>
-  </form>
-  <form method= "get" action="/about">
-	<button class="button button1">About</button>
-  </form>
-  <form method= "get" action="/">
-	<button class="button button1">Browse Recipes</button>
-  </form>
-</ul>
+{{ template "header.layout.gohtml" .}}
 
 <!-- main section starts here -->
 <div class="content">
-    <div class="center">
-		<div class="center">
-		<!-- <h1>This is the register form page (/register)</h1><br></br> -->
-			<h1>User Registration</h1>
-			<form method= "POST" action="/register">
-                <div>
-                    <label for="fname">Name</label>
-				    <input type="text" id="fname" name="name">
-					{{ with .Errors.Name }}
+	<!-- <h1>This is the register form page (/register)</h1><br></br> -->
+	<h1>User Registration</h1>
+	<div class="content-insdie">
+		<form method= "POST" action="/register">
+			<div>
+				<label for="fname">Name</label>
+				<input type="text" id="fname" name="name">
+				{{ with .UserObj.Errors.Name }}
 					<p class="error">{{ . }}</p>
-					{{ end }}<br><br>
-                </div>
+				{{ end }}<br><br>
+			</div>
+			
+			<div>
+				<label for="lname">Username</label>
+				<input type="text" id="lname" name="username">
+				{{ with .UserObj.Errors.User }}
+				<p class="error">{{ . }}</p>
+				{{ end }}<br><br>
+			</div>
+			
+			<div>
+				<label for="fname">Email</label>
+				<input type="text" id="fname" name="email">
+				{{ with .UserObj.Errors.Email }}
+				<p class="error">{{ . }}</p>
+				{{ end }}<br><br>
+			</div>
+			
+			<div>
+				<label for="lname">Password</label>
+				<input type="password" id="lname" name="passwd"><br><br>
 				
-				<div>
-                    <label for="lname">Username</label>
-				    <input type="text" id="lname" name="username">
-					{{ with .Errors.User }}
-					<p class="error">{{ . }}</p>
-					{{ end }}<br><br>
-                </div>
-				
-				<div>
-					<label for="fname">Email</label>
-					<input type="text" id="fname" name="email">
-					{{ with .Errors.Email }}
-					<p class="error">{{ . }}</p>
-					{{ end }}<br><br>
-				</div>
-				
-				<div>
-					<label for="lname">Password</label>
-					<input type="password" id="lname" name="passwd"><br><br>
-					
-					<label for="lname">Confirm Password</label>
-					<input type="password" id="lname" name="cfm_passwd">
-					{{ with .Errors.Password }}
-					<p class="error">{{ . }}</p>
-					{{ end }}<br><br>
-				</div>
-				
-				
-				<input type="submit"><br><br>
-			</form>
-		</div>
+				<label for="lname">Confirm Password</label>
+				<input type="password" id="lname" name="cfm_passwd">
+				{{ with .UserObj.Errors.Password }}
+				<p class="error">{{ . }}</p>
+				{{ end }}<br><br>
+			</div>
+			<button class="button_submit button3">Register</button>
+		</form>
     </div>
 </div>
+
 <!-- main section ends here -->
-<footer class="footer"><p>Kitchen Komplete © 2020</p></footer>
-</body>
-</html>
+<footer class="footer">
+  <p>Kitchen Komplete © 2020</p>
+</footer>

@@ -14,6 +14,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"mammal.shell/kitchenKomplete/models"
@@ -41,11 +42,11 @@ func init() {
 }
 
 func main() {
-	/* Uncomment to load environment variables from .env file
-	err := godotenv.Load()
-	if err != nil {
+	//Uncomment to load environment variables from .env file
+	err1 := godotenv.Load()
+	if err1 != nil {
 		log.Fatal("Error loading .env file")
-	} */
+	}
 
 	// Set environment variables for static ip service
 	os.Setenv("HTTP_PROXY", os.Getenv("IPB_HTTP"))

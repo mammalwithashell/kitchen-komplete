@@ -7,10 +7,32 @@
 <body>
 
 <ul>
-  <form method= "get" action="/">
-	<button class="button buttonhome">Home</button>
+  <h1 style="text-align:center; color:white; margin-bottom: -50px; height: 50px;">Kitchen Komplete</h1>
+  <form method= "get" action="/"> 
+	<button class="buttonhome button1">Home</button>
   </form>
+
+  {{if .Authenticated}}
+    {{if ne "/profile" .Path}}
+      <form method= "get" action="/profile">
+      <button class="buttonhome button1">Profile</button>
+      </form>
+    {{end}}
+  {{end}}
+
   
+
+  {{if .Authenticated}}
+    <div class="dropdown">
+      <button onclick= "myFunction()" class="dropbtn">Menu</button>
+      <div id="myDropdown" class="dropdown-content">
+        <a href="/account">Account</a>
+        <a href="/recipes">Recipes</a>
+        <a href="/pantry">Pantry</a>
+      </div>
+    </div>
+  {{end}}
+
   {{with .Authenticated}}
     <form method= "get" action="/logout">
     <button class="button button1">Logout</button>
@@ -26,16 +48,32 @@
     <button class="button button1">Register</button>
     </form>
   {{end}}
+
   {{if ne "/about" .Path}}
     <form method= "get" action="/about">
       <button class="button button1">About</button>
     </form>
   {{end}}
-  {{if .Authenticated}}
-    {{if ne "/profile" .Path}}
-      <form method= "get" action="/profile">
-      <button class="button button1">Profile</button>
-      </form>
-    {{end}}
-  {{end}}
 </ul>
+
+<script>
+/* When the user clicks on the button, 
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>

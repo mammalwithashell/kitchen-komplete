@@ -1,0 +1,76 @@
+{{ template "header.layout.gohtml" .}}
+
+<!-- main section starts here -->
+
+		
+<div class="content">
+  <div class="content-inside">
+    <!-- <h1> "This is the user add recipes page (add_recipe.html)"</h1> -->
+    <h1>Add Recipes</h1>
+    <div class="row">
+      <div class="column_small" style="background-color:#aaa;">
+        <img src="favicon.jpg" width="60%" height="50%"><br></br>
+        <form method= "Post" action="/edit/">
+              {{range .Rec}}      
+                <label>Title:</label><br/>
+                <input type="text" value={{.Name}} name="name"><br/>
+                <label>Category:</label><br/>
+                <select>
+                    {{if .Category eq "entree"}}
+                    <option value="entree" seleted>Entree</option>
+                    {{else}}
+                    <option value="entree" >Entree</option>
+                    {{end}}
+
+                    {{if .Category eq "snack"}}
+                    <option value="snack" seleted>Snack</option>
+                    {{else}}
+                    <option value="snack" >Snack</option>
+                    {{end}}
+
+                    {{if .Category eq "drink"}}
+                    <option value="drink" seleted>Drink</option>
+                    {{else}}
+                    <option value="drink" >Drink</option>
+                    {{end}}
+
+                    {{if .Category eq "side"}}
+                    <option value="side" seleted>Side</option>
+                    {{else}}
+                    <option value="side" >Side</option>
+                    {{end}}
+                </select><br/>
+                <label>Ingredients:</label><br />
+                <textarea name="ingredients" value={{range .Ingredients}}{{.}}{{end}}></textarea><br/>
+                <label>Preparation time:</label><br/>
+                <input type="text" name="preptime" value={{.PrepTime}}><br/>
+                <label>Instructions:</label><br />
+                <textarea name="instructions" value={{range .Instructions}}{{.}}{{end}}></textarea><br/>
+                <label>Privacy:<label><br />
+                {{if .Public eq "Public"}}
+                <input type="radio" id="Public" name="privacy" value="Public" checked>
+                {{else}}
+                <input type="radio" id="Public" name="privacy" value="Public">
+                {{end}}
+                <label for="Public">Public</label><br>
+                {{if .Public eq "Private"}}
+                <input type="radio" id="Private" name="privacy" value="Private" checked>
+                {{else}}
+                <input type="radio" id="Private" name="privacy" value="Private">
+                {{end}}
+                <label for="Private">Private</label><br>
+                <button class="button2 button_submit">Submit</button>
+              {{end}}
+        </form>
+        <form method= "get" action="/profile" style="position: center">
+            <button class="button2 button_submit">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- main section ends here -->
+<footer class="footer">
+  <p>Kitchen Komplete © 2020</p>
+</footer>
