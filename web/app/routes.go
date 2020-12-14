@@ -8,9 +8,8 @@ func (a application) Routes() {
 	app.router.HandleFunc("/create-recipe", app.createRecipe)
 	app.router.HandleFunc("/browse", app.allRecipePage)
 	app.router.HandleFunc("/myrecipes", app.readRecipe)
-	app.router.HandleFunc("/recipe/{_id}/", app.recipe)
-	app.router.HandleFunc("/edit/{_id}/", app.editRecipe)
-	app.router.HandleFunc("/delete/{_id}/", app.recipe)
+	app.router.HandleFunc("/edit_recipe/{_id}/", app.editRecipe)
+	//app.router.HandleFunc("/delete/{_id}/", app.recipe)
 	app.router.HandleFunc("/support", app.support)
 	app.router.HandleFunc("/mypantry", app.pantry)
 	app.router.HandleFunc("/login", app.login)
@@ -19,5 +18,5 @@ func (a application) Routes() {
 	app.router.HandleFunc("/profile", app.profile)
 	app.router.HandleFunc("/logout", app.logout)
 	app.router.HandleFunc("/about", app.about)
-	app.router.Use(loggingMiddleware)
+	// app.router.Use(loggingMiddleware)
 }

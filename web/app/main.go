@@ -12,7 +12,6 @@ import (
 
 	"github.com/gobuffalo/packr"
 	"github.com/gorilla/mux"
-	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -25,10 +24,15 @@ var app application
 
 // Init function runs before the main go code
 func init() {
+	//Uncomment to load environment variables from .env file
+	err1 := godotenv.Load()
+	if err1 != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	// Secure Cookie stuff
-	authKeyOne := securecookie.GenerateRandomKey(64)
-	encryptionKeyOne := securecookie.GenerateRandomKey(32)
+	authKeyOne := []byte(os.Getenv("AUTH_KEY"))
+	encryptionKeyOne := []byte(os.Getenv("ENCRYPT_KEY"))
 	app.store = sessions.NewCookieStore(authKeyOne, encryptionKeyOne)
 
 	// Options for all the session cookies
@@ -42,11 +46,6 @@ func init() {
 }
 
 func main() {
-	//Uncomment to load environment variables from .env file
-	err1 := godotenv.Load()
-	if err1 != nil {
-		log.Fatal("Error loading .env file")
-	}
 
 	// Set environment variables for static ip service
 	os.Setenv("HTTP_PROXY", os.Getenv("IPB_HTTP"))

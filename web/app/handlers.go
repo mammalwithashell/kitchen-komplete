@@ -139,75 +139,32 @@ func (app application) readRecipe(res http.ResponseWriter, req *http.Request) {
 }
 
 // update recipe saved in database
-func (app *application) recipe(res http.ResponseWriter, req *http.Request) {
-	// Update in the CRUD
-	var out templateData
-	session, _ := app.store.Get(req, "cookie-name")
-	sessionUser := session.Values["user"]
-	if session.Values["authenticated"] != nil {
-		out.Authenticated = session.Values["authenticated"].(bool)
-	}
-
-	if req.Method == http.MethodGet {
-		app.templates.ExecuteTemplate(res, "recipe.page.gohtml", out)
-		// fmt.Fprintf(res, "hello")
-		return
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	usrRecipeCollection := app.client.Database("recipes").Collection(sessionUser.(string))
-
-	r := models.Recipe{
-		ID:           primitive.NewObjectID(),
-		Name:         req.FormValue("name"),
-		Category:     req.FormValue("category"),
-		Ingredients:  strings.Split(req.FormValue("ingredients"), ","),
-		PrepTime:     req.FormValue("preptime"),
-		Instructions: strings.Split(req.FormValue("instructions"), ","),
-		OwnerID:      sessionUser.(string),
-		Public:       req.FormValue("privacy"),
-	}
-	usrRecipeCollection.InsertOne(ctx, r)
-	app.templates.ExecuteTemplate(res, "profile_recipe.page.gohtml", out)
-}
-
-func (app *application) edit1(res http.ResponseWriter, req *http.Request) {
-	var out templateData
-	session, _ := app.store.Get(req, "cookie-name")
-	out.User = session.Values["user"].(string)
-	if session.Values["authenticated"] != nil {
-		out.Authenticated = session.Values["authenticated"].(bool)
-	}
-	err := app.templates.ExecuteTemplate(res, "edit.page.gohtml", out)
-	if err != nil {
-		fmt.Fprint(res, err)
-	}
-}
-
 func (app *application) editRecipe(res http.ResponseWriter, req *http.Request) {
-	//setup
+	// Setup
+	res.Header().Add("Content-Type", "text/html")
 	var out templateData
 	session, _ := app.store.Get(req, "cookie-name")
 	out.User = session.Values["user"].(string)
 
+	// Redirect if the user is not authenticated
 	if out.Authenticated = auth(session, nil); !out.Authenticated {
 		http.Redirect(res, req, "/", http.StatusForbidden)
 		return
 	}
 
+	// Get object ID from the hex string in the url
+	u, _ := url.Parse(req.URL.String())
+	id := strings.Split(u.Path, "/")[2]
+	objID, _ := primitive.ObjectIDFromHex(id)
+
+	// Initialize variable for db query
 	var recipeForUpdate models.Recipe
 
 	// Connect to database and collection
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	usrRecipeCollection := app.client.Database("recipes").Collection(out.User)
-	u, _ := url.Parse(req.URL.String())
-	id := strings.Split(u.Path, "/")[2]
-	objID, _ := primitive.ObjectIDFromHex(id)
-	fmt.Println("User:", out.User)
 	err := usrRecipeCollection.FindOne(ctx, bson.M{"_id": objID}).Decode(&recipeForUpdate)
-	fmt.Println(recipeForUpdate)
 	if err != nil {
 		// ErrNoDocuments means that the filter did not match any documents in the collection
 		if err == mongo.ErrNoDocuments {
@@ -216,9 +173,16 @@ func (app *application) editRecipe(res http.ResponseWriter, req *http.Request) {
 		log.Fatal(err)
 	}
 
+	// Check that the authenticated user is the owner of the recipe being updated
+	if out.User != recipeForUpdate.OwnerID {
+		http.Redirect(res, req, "/", http.StatusForbidden)
+		return
+	}
+
 	// fill the templateData struct
 	out.Rec = append(out.Rec, recipeForUpdate)
 
+	// Check the HTTP request method
 	if req.Method != http.MethodPost {
 		err = app.templates.ExecuteTemplate(res, "edit.page.gohtml", out)
 		if err != nil {
@@ -239,23 +203,18 @@ func (app *application) editRecipe(res http.ResponseWriter, req *http.Request) {
 		Public:       req.FormValue("privacy"),
 	}
 
-	//implemet
+	// Update the Recipe
 	filter := bson.D{{"_id", r.ID}}
-	// update := bson.D{{"$set", bson.D{{"email", "newemail@example.com"}}}}
-
-	result, err := usrRecipeCollection.UpdateOne(ctx, filter, r, nil)
+	_, err = usrRecipeCollection.UpdateOne(ctx, filter, r, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if result.MatchedCount != 0 {
-		fmt.Println("matched and replaced an existing document")
-		return
-	}
+	http.Redirect(res, req, "/profile", 200)
 }
 
 // delete recipe saved in database
-func (app application) deleteRecipe(res http.ResponseWriter, req *http.Request) {
+func (app *application) deleteRecipe(res http.ResponseWriter, req *http.Request) {
 	// Delete from the CRUD
 	//vars := mux.Vars(req)
 }
