@@ -1,4 +1,4 @@
-namespace backend;
+namespace kitchen.komplete.api;
 
 public class WeatherForecast
 {
