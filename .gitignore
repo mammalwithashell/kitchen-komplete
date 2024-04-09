@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 Resources.md
-
+*appsettings.json
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -555,3 +555,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+kitchen-komplete.api/appsettings.json
+kitchen-komplete.api/appsettings.json

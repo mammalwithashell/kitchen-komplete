@@ -1,28 +1,26 @@
 
-using System;
 namespace KitchenKomplete.Helpers
 {
-    public class DatabaseHelper{
-        public static string? GetRDSConnectionString(){
+    public static class DatabaseHelper{
+        public static string? GetRDSConnectionString(IConfiguration configuration){
 
-            string? dbname = Environment.GetEnvironmentVariable("RDS_DB_NAME");
+            string? dbname = configuration.GetConnectionString("DB");
 
             if (string.IsNullOrEmpty(dbname)) return null;
 
-            string? username = Environment.GetEnvironmentVariable("RDS_USERNAME");
+            string? username = Environment.GetEnvironmentVariable("ASPNETCORE_RDS_USERNAME");
             if (string.IsNullOrEmpty(username)) return null;
 
-            string? password = Environment.GetEnvironmentVariable("RDS_PASSWORD");
+            string? password = Environment.GetEnvironmentVariable("ASPNETCORE_RDS_PASSWORD");
             if (string.IsNullOrEmpty(password)) return null;
 
-            string? hostname = Environment.GetEnvironmentVariable("RDS_HOSTNAME");
+            string? hostname = Environment.GetEnvironmentVariable("ASPNETCORE_RDS_HOSTNAME");
             if (string.IsNullOrEmpty(hostname)) return null;
 
-            string? port = Environment.GetEnvironmentVariable("RDS_PORT");
+            string? port = Environment.GetEnvironmentVariable("ASPNETCORE_RDS_PORT");
             if (string.IsNullOrEmpty(port)) return null;
-
-
-            return $"Host={hostname};Port={port};;User ID={username};Password={password};Database={dbname}";
+            Console.WriteLine($"Host={hostname};Port={port};Username={username};Password={password};Database={dbname}");
+            return $"Host={hostname};Port={port};Username={username};Password={password};Database={dbname}";
         }
     }
 }
